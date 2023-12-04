@@ -1,7 +1,8 @@
 import express, { response } from "express";
-import { PORT,mongoDBURL } from "./config.js";
+import { PORT } from "./config.js";
 import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js";
+import 'dotenv/config'
 
 const app = express()
 
@@ -38,8 +39,22 @@ app.post("/books", async(req,res)=>{
     }
 })
 
+app.get('/books', async (request, response) => {
+    try {
+      const books = await Book.find({});
+  
+      return response.status(200).json({
+        count: books.length,
+        data: books,
+      });
+    } catch (error) {
+      console.log(error.message);
+      response.status(500).send({ message: error.message });
+    }
+  });
+
 mongoose
-.connect(mongoDBURL)
+.connect(process.env.MONGOURI)
 .then(()=>{
     console.log("App connected to database")
     app.listen(PORT, ()=>{
