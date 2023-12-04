@@ -1,57 +1,17 @@
 import express, { response } from "express";
 import { PORT } from "./config.js";
 import mongoose from "mongoose";
-import { Book } from "./models/bookModel.js";
-import 'dotenv/config'
+import 'dotenv/config';
+import booksRoute from "./routes/booksRoute.js";
+import cors from "cors";
 
 const app = express()
-
+//middleware para analizar el request body
 app.use(express.json())
+//middleware para el manejo del cors policy
+app.use(cors())
 
-//prueba
-app.get("/",(request,response)=>{
-    console.log(request)
-    return response.status(234).send("welcome to eBook")
-});
-
-//save a new book
-app.post("/books", async(req,res)=>{
-    try{
-        if(
-            !req.body.title ||
-            !req.body.author ||
-            !req.body.publishYear
-        ){
-            return res.status(400).send({
-                message: "send all required fields: tittle, author and publishYear"})
-        }
-        const newBook = {
-            title: req.body.title,
-            author: req.body.author,
-            publishYear: req.body.publishYear
-        }
-        const book = await Book.create(newBook)
-        return res.status(201).send(book)
-        
-    }catch (error){
-        console.error(error.message);
-        res.status(500).send({message: error.message});
-    }
-})
-
-app.get('/books', async (request, response) => {
-    try {
-      const books = await Book.find({});
-  
-      return response.status(200).json({
-        count: books.length,
-        data: books,
-      });
-    } catch (error) {
-      console.log(error.message);
-      response.status(500).send({ message: error.message });
-    }
-  });
+app.use("/books",booksRoute)
 
 mongoose
 .connect(process.env.MONGOURI)
