@@ -1,9 +1,9 @@
 import React from 'react'
 
-const showBooks = () => {
+const ShowBooks = () => {
   return (
     <div>showBooks</div>
   )
 }
 
-export default showBooks
+export default ShowBooks
