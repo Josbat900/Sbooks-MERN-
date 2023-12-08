@@ -1,9 +1,9 @@
 import React from 'react'
 
-const deleteBooks = () => {
+const DeleteBooks = () => {
   return (
     <div>deleteBooks</div>
   )
 }
 
-export default deleteBooks
+export default DeleteBooks
