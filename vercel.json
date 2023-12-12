@@ -2,7 +2,11 @@
     "version": 2,
     "builds": [
       {
-        "src": "./*.js",
+        "src": "./frontend/index.js",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "./backend/index.js",
         "use": "@vercel/node"
       }
     ],
